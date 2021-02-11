@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {   
@@ -31,6 +32,8 @@ class LoginController extends Controller
             !Hash::check($request->password, $user->password)) {
             return view('login')->with('error', 'Username Or Password Wrong');
         }
+        
+        Auth::login($user);
 
         if($user->role == 'admin'){
             return redirect()->route('admin');
@@ -40,4 +43,9 @@ class LoginController extends Controller
             return redirect()->route('guest');
         }
     }
+
+    public function logout(Request $request) {
+        Auth::logout();
+        return redirect('/');
+      }
 }

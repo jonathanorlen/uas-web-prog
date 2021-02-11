@@ -14,8 +14,12 @@ use App\Http\Controllers\LoginController;
 |
 */
 
-Route::get('/', [LoginController::class, 'index']);
+Route::get('/', [LoginController::class, 'index'])->name('home');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
-Route::get('/guest', [LoginController::class, 'guest'])->name('guest');
-Route::get('/admin', [LoginController::class, 'admin'])->name('admin');
-Route::get('/user', [LoginController::class, 'user'])->name('user');
+Route::group(['prefix' => 'panel','middleware' => 'auth'], function () {
+    Route::get('/guest', [LoginController::class, 'guest'])->name('guest');
+    Route::get('/admin', [LoginController::class, 'admin'])->name('admin');
+    Route::get('/user', [LoginController::class, 'user'])->name('user');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+});
+
