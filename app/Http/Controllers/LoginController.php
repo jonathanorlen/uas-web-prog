@@ -26,10 +26,12 @@ class LoginController extends Controller
     }
 
     public function login(Request $request){
-        $user = User::where('email', $request->email)->first();
+        $email = $request->email;
+        $password = $request->password;
+        $user = User::where('email', $email)->first();
         
         if (!$user &&
-            !Hash::check($request->password, $user->password)) {
+            !Hash::check($password , $user->password)) {
             return view('login')->with('error', 'Username Or Password Wrong');
         }
         
