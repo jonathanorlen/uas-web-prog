@@ -10,19 +10,21 @@ class MahasiswaController extends Controller
     
     public function index($page = 0)
     {   
-        return Mahasiswa::select('name','nim','email')
-                        ->skip(($page-1)*3)
-                        ->take(3)
-                        ->get();
+        $mahasiswa = Mahasiswa::select('name','nim','email')
+                    ->skip(($page-1)*3)
+                    ->take(3)
+                    ->get();
+
+        return response(['Mahasiswa' => $mahasiswa], 200);
     }
 
     public function total()
     {
-        return ['total_mahasiswa' => Mahasiswa::count()];
+        return response(['total_mahasiswa' => Mahasiswa::count()], 200);
     }
 
     public function show(Mahasiswa $Mahasiswa)
     {
-        return $Mahasiswa;
+        return response(['detail_mahasiswa' => $Mahasiswa]);
     }
 }
