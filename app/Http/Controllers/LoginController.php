@@ -27,14 +27,14 @@ class LoginController extends Controller
 
     public function login(Request $request){
         $user = User::where('email', $request->email)->first();
-        
-        if(!$user){
-            redirect()->route('home');
+
+        if(empty($user->password)){
+            return redirect()->route('home');
         }
 
         if (!$user &&
             !Hash::check($request->password, $user->password)) {
-            return view('login')->with('error', 'Username Or Password Wrong');
+            return view('home')->with('error', 'Username Or Password Wrong');
         }
         
         Auth::login($user);
