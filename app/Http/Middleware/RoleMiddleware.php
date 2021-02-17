@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
@@ -15,7 +16,13 @@ class RoleMiddleware
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
-    {
+    {   
+        if(Auth::user()->role == 'user'){
+            return redirect()->route('user');
+        }else{
+            return redirect()->route('guest');
+        }
+
         return $next($request);
     }
 }
